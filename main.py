@@ -10,11 +10,16 @@ instruction = '''Выберете необходимое действие:
 6. Расходы - просмотреть все расходы 
 7. Поиск - выполнить поиск по категории 
 8. Все - посмотреть все записи
-9. Выход - выйти из программы
-Так же Вы можете использовать цифры для выбора операции'''
+9. Выход - выйти из программы'''
 
 
 def add_record(expenses):
+    '''
+    Добавляет новую запись о доходе или расходе в список записей о финансах.
+
+    Параметры:
+        expenses (list): Список записей о финансах, куда будет добавлена новая запись.
+    '''
 
     date = input('Введите дату (0 - использовать сегодняшнюю): ')
     if date == '0':
@@ -36,6 +41,13 @@ def add_record(expenses):
 
 
 def delete_record(expenses):
+    '''
+    Удаляет существующую запись о финансах из списка записей.
+
+    Параметры:
+        expenses (list): Список записей о финансах.
+    '''
+
     for id, expense in enumerate(expenses):
         if expense['category'] == 'Расход':
             print(f'\nId: {id + 1}\nДата: {expense['date']}\nКатегория: {expense['category']}\n\
@@ -57,11 +69,24 @@ def delete_record(expenses):
 
 
 def balance_display(expenses):
+    '''
+    Показывает текущий баланс на основе списка записей о финансах.
+
+    Параметры:
+        expenses (list): Список записей о финансах.
+    '''
     total_expenses = sum(expense['amount'] for expense in expenses)
     print(f'Текущий баланс: {total_expenses}')
 
 
 def edit_record(expenses): 
+    '''
+    Изменяет существующую запись о финансах в списке записей.
+
+    Параметры:
+        expenses (list): Список записей о финансах.
+    '''
+
     for id, expense in enumerate(expenses):
         if expense['category'] == 'Расход':
             print(f'\nId: {id + 1}\nДата: {expense['date']}\nКатегория: {expense['category']}\n\
@@ -97,8 +122,16 @@ def edit_record(expenses):
     expenses[index - 1]['description'] = description
 
     save_expenses(expenses)
+    print('Запись успешно удалена')
 
 def income_display(expenses):
+    '''
+    Показывает все записи о доходах из списка записей о финансах.
+
+    Параметры:
+        expenses (list): Список записей о финансах.
+    '''
+
     print('Все доходы: ')
     for expense in expenses:
         if expense['category'] == 'Доход':
@@ -107,6 +140,12 @@ def income_display(expenses):
 
 
 def expenses_display(expenses):
+    '''
+    Показывает все записи о расходах из списка записей о финансах.
+
+    Параметры:
+        expenses (list): Список записей о финансах.
+    '''
     print('Все расходы: ')
     for expense in expenses:
         if expense['category'] == 'Расход':
@@ -115,6 +154,15 @@ def expenses_display(expenses):
 
 
 def filter_records(expenses, parameter, value):
+    '''
+    Фильтрует записи о расходах по указанным параметрам.
+
+    Параметры:
+        expenses (List[Dict[str, Union[str, float]]]): Список словарей с информацией о расходах.
+        parameter (str): Параметр для фильтрации (Дата, Категория, Сумма, Описание).
+        value (str): Значение, по которому производится фильтрация.
+    '''
+
     filtered_expenses = []
     for expense in expenses:
         if parameter == 'Дата':
@@ -137,6 +185,13 @@ def filter_records(expenses, parameter, value):
 
 
 def search(expenses):
+    '''
+    Выполняет поиск по записям о финансах на основе указанных параметров.
+
+    Параметры:
+        expenses (list): Список записей о финансах.
+    '''
+    
     parameters = ['Дата', 'Категория', 'Сумма', 'Описание']
     search_params = []
     for idx, param in enumerate(parameters, start=1):
@@ -177,6 +232,13 @@ def search(expenses):
 
 
 def display_all(expenses):
+    '''
+    Показывает все записи о финансах из списка записей.
+
+    Параметры:
+        expenses (list): Список записей о финансах.
+    '''
+
     print('Все записи: ')
     for expense in expenses:
         if expense['category'] == 'Расход':
@@ -188,10 +250,21 @@ def display_all(expenses):
 
 
 def save_expenses(expenses):
+    '''
+    Сохраняет список записей о финансах в файл.
+
+    Параметры:
+        expenses (list): Список записей о финансах.
+    '''
+
     with open('expenses.txt', 'w') as file:
         json.dump(expenses, file)
 
 def load_expenses():
+    '''
+    Загружает список записей о финансах из файла.
+    '''
+
     if os.path.exists('expenses.txt'):
         with open('expenses.txt', 'r') as file:
             try:
@@ -203,11 +276,15 @@ def load_expenses():
 
 
 def main():
+    '''
+    Основная функция программы управления финансами.
+    '''
+
     expenses = load_expenses()
 
     while True:
         print(instruction)
-        operation = input()
+        operation = input('Так же Вы можете использовать цифры для выбора операции: ')
         match operation:
             case 'Добавить' | '1':
                 add_record(expenses)
@@ -234,4 +311,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
