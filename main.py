@@ -1,7 +1,8 @@
 import os, json, datetime
+from typing import List, Dict, Union
 
 
-instruction = '''Выберете необходимое действие:
+instruction: str = '''Выберете необходимое действие:
 1. Добавить - добавить запись 
 2. Удалить - удалить запись 
 3. Баланс - проверить запись 
@@ -13,7 +14,7 @@ instruction = '''Выберете необходимое действие:
 9. Выход - выйти из программы'''
 
 
-def add_record(expenses):
+def add_record(expenses: List[Dict[str, Union[str, float]]]) -> None:
     '''
     Добавляет новую запись о доходе или расходе в список записей о финансах.
 
@@ -40,7 +41,7 @@ def add_record(expenses):
     print('Запись успешно добавлена')
 
 
-def delete_record(expenses):
+def delete_record(expenses: List[Dict[str, Union[str, float]]]) -> None:
     '''
     Удаляет существующую запись о финансах из списка записей.
 
@@ -76,7 +77,7 @@ def balance_display(expenses):
         expenses (list): Список записей о финансах.
     '''
     total_expenses = sum(expense['amount'] for expense in expenses)
-    print(f'Текущий баланс: {total_expenses}')
+    print(f'\nТекущий баланс: {total_expenses}\n')
 
 
 def edit_record(expenses): 
@@ -153,7 +154,7 @@ def expenses_display(expenses):
 Сумма: {-expense['amount']}\nОписание: {expense['description']}\n')
 
 
-def filter_records(expenses, parameter, value):
+def filter_records(expenses: List[Dict[str, Union[str, float]]], parameter: str, value: str) -> List[Dict[str, Union[str, float]]]:
     '''
     Фильтрует записи о расходах по указанным параметрам.
 
@@ -184,7 +185,7 @@ def filter_records(expenses, parameter, value):
     return filtered_expenses
 
 
-def search(expenses):
+def search(expenses: List[Dict[str, Union[str, float]]]) -> None:
     '''
     Выполняет поиск по записям о финансах на основе указанных параметров.
 
@@ -231,7 +232,7 @@ def search(expenses):
 
 
 
-def display_all(expenses):
+def display_all(expenses: List[Dict[str, Union[str, float]]]) -> None:
     '''
     Показывает все записи о финансах из списка записей.
 
@@ -249,7 +250,7 @@ def display_all(expenses):
 Сумма: {expense['amount']}\nОписание: {expense['description']}\n')
 
 
-def save_expenses(expenses):
+def save_expenses(expenses: List[Dict[str, Union[str, float]]]) -> None:
     '''
     Сохраняет список записей о финансах в файл.
 
@@ -260,7 +261,7 @@ def save_expenses(expenses):
     with open('expenses.txt', 'w') as file:
         json.dump(expenses, file)
 
-def load_expenses():
+def load_expenses() -> List[Dict[str, Union[str, float]]]:
     '''
     Загружает список записей о финансах из файла.
     '''
@@ -275,7 +276,7 @@ def load_expenses():
          return []
 
 
-def main():
+def main() -> None:
     '''
     Основная функция программы управления финансами.
     '''
