@@ -124,11 +124,11 @@ def filter_records(expenses, parameter, value):
             if expense['category'] == value:
                 filtered_expenses.append(expense)
         elif parameter == 'Сумма':
-            if value.sttarswith('>') and expense['amount'] > float(value[1:]):
+            if value.startswith('>') and expense['amount'] > float(value[1:]):
                 filtered_expenses.append(expense)
             elif value.startswith('<') and expense['amount'] < float(value[1:]):
                 filtered_expenses.append(expense)
-            elif expense['amount'] == float(value):
+            elif value.isdigit() and expense['amount'] == float(value):
                 filtered_expenses.append(expense)
         elif parameter == 'Описание':
             if value.lower() in expense['description'].lower():
@@ -164,8 +164,13 @@ def search(expenses):
     print('Результаты поиска:')
     if filtered_expenses:
         for expense in filtered_expenses:
-            print(f'\nДата: {expense["date"]}\nКатегория: {expense["category"]}\n'
+            if expense['category'] == 'Расход':
+                print(f'\nДата: {expense["date"]}\nКатегория: {expense["category"]}\n'
+                  f'Сумма: {-expense["amount"]}\nОписание: {expense["description"]}\n')
+            else:
+                print(f'\nДата: {expense["date"]}\nКатегория: {expense["category"]}\n'
                   f'Сумма: {expense["amount"]}\nОписание: {expense["description"]}\n')
+
     else:
         print('Нет записей, удовлетворяющих условиям поиска.')
 
